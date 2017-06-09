@@ -1,0 +1,16 @@
+# Python
+*.pyc
+*.pyo
+
+# Virtualenv
+.venv
+.ve
+
+# IDE
+.idea
+
+# Django
+project/db.sqlite3
+
+# Secrets
+google-service-account.json

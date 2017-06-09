@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/map.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="page-header">
+        <h1>Google Maps + Fusiontable</h1>
+        <a href="https://fusiontables.google.com/data?docid={{ ft_doc_id }}" target="_blank">Go to Fusion Table</a>
+    </div>
+
+    <div id="map"></div>
+
+    <h2>Locations</h2>
+
+    <div id="locations">
+        <table id="locations-table" class="table table-bordered table-hover">
+            <tr>
+                <th>Address</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+            </tr>
+        </table>
+    </div>
+
+    <button class="btn btn-default" onclick="locationMap.clearLocationList()">Remove all locations</button>
+</div>
+
+<script>
+    var locationMap;
+
+    function initMap() {
+        // Callback for the Google Map loaded below
+        locationMap = new Map(
+            document.getElementById('map'), {
+                lookupCoordinates: "{% url 'lookup-coordinates' %}",
+                getLocations: "{% url 'get-locations' %}",
+                clearLocations: "{% url 'clear-locations' %}"
+            },
+            '{{ csrf_token }}'
+        );
+    }
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script src="{% static 'js/src/Map.js' %}"></script>
+<script src="{% static 'js/src/Location.js' %}"></script>
+<script src="{% static 'js/dist/notify.min.js' %}"></script>
+
+{% endblock %}
